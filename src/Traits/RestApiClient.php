@@ -64,7 +64,6 @@ trait RestApiClient
         ]);
 
         $this->auth = $auth;
-        $this->getFreshToken();
     }
 
     /**
@@ -82,6 +81,12 @@ trait RestApiClient
             'X-IBM-Client-Id'  => $this->auth->client_id,
             'X-RMG-Auth-Token' => $this->auth->token,
         ];
+
+        // First request which isn't to get a token should get a
+        // token first.
+        if (false === $dont_refresh && null === $this->auth->token) {
+            $this->getFreshToken();
+        }
 
         /**
          * @var HttpResponse

@@ -1,0 +1,10 @@
+<?php
+
+declare(strict_types=1);
+
+namespace MobiMarket\RoyalMailShipping\Entities;
+
+class PrintDocumentRequest extends FillableEntity
+{
+    // TODO: INCOMPLETE ENTITY
+}

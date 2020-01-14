@@ -6,7 +6,7 @@ Install the latest version with
 ```bash
 $ composer require mobi-market/royalmail-shipping-v3
 ```
-Run ```composer update``` followed by ```compoaser dump```
+Run ```composer update``` followed by ```composer dump```
 
 ## Publish the configuration file
 ```

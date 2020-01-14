@@ -10,7 +10,7 @@ Run ```composer update``` followed by ```composer dump```
 
 ## Publish the configuration file
 ```
-php artisan vendor:publish --provider=MobiMarket\RoyalMailShipping\RoyalMailServiceProvider
+php artisan vendor:publish --provider="MobiMarket\RoyalMailShipping\RoyalMailServiceProvider"
 ```
 
 Update the settings in the configuration file located in: `config\royalmail.php`

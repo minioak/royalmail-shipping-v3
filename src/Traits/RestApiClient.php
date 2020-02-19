@@ -56,11 +56,13 @@ trait RestApiClient
 
         $this->client = new HttpClient([
             // Base URI is used with relative requests
-            'base_uri' => $base_uri,
+            'base_uri'    => $base_uri,
             // You can set any number of default request options.
-            'timeout'  => $timeout,
-            // handler stack for logging purposes
-            'handler' => $stack,
+            'timeout'     => $timeout,
+            // Handler stack for logging purposes.
+            'handler'     => $stack,
+            // Disable internal errors to let us catch all status codes.
+            'http_errors' => false,
         ]);
 
         $this->auth = $auth;
@@ -76,17 +78,17 @@ trait RestApiClient
         ?array $headers = null,
         bool $dont_refresh = false
     ): ?stdClass {
-        $body    = json_encode($data ?? []);
-        $headers = $headers ?? [
-            'X-IBM-Client-Id'  => $this->auth->client_id,
-            'X-RMG-Auth-Token' => $this->auth->token,
-        ];
-
         // First request which isn't to get a token should get a
         // token first.
         if (false === $dont_refresh && null === $this->auth->token) {
             $this->getFreshToken();
         }
+
+        $body    = json_encode($data ?? []);
+        $headers = $headers ?? [
+            'X-IBM-Client-Id'  => $this->auth->client_id,
+            'X-RMG-Auth-Token' => $this->auth->token,
+        ];
 
         /**
          * @var HttpResponse

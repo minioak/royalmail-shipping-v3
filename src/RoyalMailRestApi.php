@@ -96,27 +96,27 @@ class RoyalMailRestApi
     // manifests
 
     /*
-     * POST /manifest
+     * POST /manifests
      */
     public function manifest(array $body): object
     {
-        return $this->sendAPIRequestNotEmpty('post', 'manifest', $body);
+        return $this->sendAPIRequestNotEmpty('post', 'manifests', $body);
     }
 
     /*
-     * POST /manifest/bycarrier
+     * POST /manifests/bycarrier
      */
     public function manifestByCarrier(array $body): object
     {
-        return $this->sendAPIRequestNotEmpty('post', 'manifest/bycarrier', $body);
+        return $this->sendAPIRequestNotEmpty('post', 'manifests/bycarrier', $body);
     }
 
     /*
-     * POST /manifest/byservice
+     * POST /manifests/byservice
      */
     public function manifestByService(array $body): object
     {
-        return $this->sendAPIRequestNotEmpty('post', 'manifest/byservice', $body);
+        return $this->sendAPIRequestNotEmpty('post', 'manifests/byservice', $body);
     }
 
     // addresses

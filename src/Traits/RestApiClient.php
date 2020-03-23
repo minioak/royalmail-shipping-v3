@@ -28,12 +28,18 @@ trait RestApiClient
     protected $auth;
 
     /**
+     * @var int|null
+     */
+    protected $cache_ttl = null;
+
+    /**
      * Sets up require parameters for the api.
      */
     public function buildClient(
         string $base_uri,
         float $timeout,
         bool $should_log,
+        ?int $cache_ttl,
         ApiAuth $auth
     ): void {
         $stack = HandlerStack::create();
@@ -65,7 +71,13 @@ trait RestApiClient
             'http_errors' => false,
         ]);
 
-        $this->auth = $auth;
+        $this->auth      = $auth;
+        $this->cache_ttl = $cache_ttl;
+
+        // If caching is enabled, attempt to load it.
+        if ($cache_ttl && $token = Cache::get('rm-integration-token')) {
+            $this->auth->token = $token;
+        }
     }
 
     /**
@@ -159,6 +171,11 @@ trait RestApiClient
         // do not refresh, since this IS the refresh request.
         $response = $this->sendAPIRequestNotEmpty('post', 'token', null, $headers, true);
 
+        // Update token then cache.
         $this->auth->token = $response->token;
+
+        if ($this->cache_ttl) {
+            Cache::put('rm-integration-token', $this->auth->token, $this->cache_ttl);
+        }
     }
 }

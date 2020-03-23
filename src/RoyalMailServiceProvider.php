@@ -39,6 +39,7 @@ class RoyalMailServiceProvider extends ServiceProvider
                 $config->get('royalmail.api.url'),
                 $config->get('royalmail.api.timeout'),
                 $config->get('royalmail.api.should_log'),
+                $config->get('royalmail.api.token_cache_ttl'),
                 ApiAuth::fromArray($config->get('royalmail.auth'))
             );
         });

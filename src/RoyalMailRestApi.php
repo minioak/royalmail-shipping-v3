@@ -15,12 +15,14 @@ class RoyalMailRestApi
         string $base_uri,
         float $timeout,
         bool $should_log,
+        ?int $cache_ttl,
         ApiAuth $auth
     ) {
         $this->buildClient(
             $base_uri,
             $timeout,
             $should_log,
+            $cache_ttl,
             $auth
         );
     }

@@ -8,8 +8,17 @@ return [
      */
     'api' => [
         'url'        => env('ROYALMAIL_API_URL', 'https://api.royalmail.net/shipping/v3/'),
-        'timeout'    => env('ROYALMAIL_API_TIMEOUT', 5.0),
+        'timeout'    => (float) env('ROYALMAIL_API_TIMEOUT', 10.0),
         'should_log' => env('ROYALMAIL_API_SHOULD_LOG', true),
+
+        /*
+         * Settings for keeping the tokens alive.
+         * Please note this is just to store the cache, if the token becomes invalid after
+         * any timeframe it will automatically be regenerated and added back with a fresh TTL.
+         *
+         * Set to null to disable.
+         */
+        'token_cache_ttl' => (int) (60 * 3.5), // Attempt to keep it for 3:30 hrs if possible.
     ],
 
     /*

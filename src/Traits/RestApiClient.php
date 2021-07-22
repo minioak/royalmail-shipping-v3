@@ -21,17 +21,17 @@ trait RestApiClient
     /**
      * @var HttpClient
      */
-    protected $client;
+    protected HttpClient $client;
 
     /**
      * @var ApiAuth
      */
-    protected $auth;
+    protected ApiAuth $auth;
 
     /**
      * @var int|null
      */
-    protected $cache_ttl = null;
+    protected ?int $cache_ttl = null;
 
     /**
      * Sets up require parameters for the api.

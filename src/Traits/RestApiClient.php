@@ -8,6 +8,7 @@ use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use MobiMarket\RoyalMailShipping\Entities\ApiAuth;
 use MobiMarket\RoyalMailShipping\Exceptions\RequestFailed;
@@ -47,15 +48,17 @@ trait RestApiClient
         if (true === $should_log) {
             $stack->push(
                 Middleware::log(
-                    Log::getMonolog(),
-                    new MessageFormatter('{req_body} - {res_body}')
+                    Log::getLogger(),
+                    new MessageFormatter('{req_body} - {res_body}'),
+                    'debug'
                 )
             );
 
             $stack->push(
                 Middleware::log(
-                    Log::getMonolog(),
-                    new MessageFormatter('{uri} - {method} - {code}')
+                    Log::getLogger(),
+                    new MessageFormatter('{uri} - {method} - {code}'),
+                    'debug'
                 )
             );
         }

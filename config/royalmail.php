@@ -7,7 +7,7 @@ return [
      * API Details used for the internal client.
      */
     'api' => [
-        'url'        => env('ROYALMAIL_API_URL', 'https://api.royalmail.net/shipping/v3/'),
+        'url'        => env('ROYALMAIL_API_URL', 'https://api.proshipping.net/v4/'),
         'timeout'    => (float) env('ROYALMAIL_API_TIMEOUT', 10.0),
         'should_log' => env('ROYALMAIL_API_SHOULD_LOG', true),
 
@@ -26,8 +26,6 @@ return [
      */
     'auth' => [
         'client_id'     => env('ROYALMAIL_AUTH_CLIENT_ID'),
-        'client_secret' => env('ROYALMAIL_AUTH_CLIENT_SECRET'),
-        'username'      => env('ROYALMAIL_AUTH_USERNAME'),
-        'password'      => env('ROYALMAIL_AUTH_PASSWORD'),
+        'client_secret' => env('ROYALMAIL_AUTH_CLIENT_SECRET')
     ],
 ];

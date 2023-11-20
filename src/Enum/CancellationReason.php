@@ -6,8 +6,8 @@ namespace MobiMarket\RoyalMailShipping\Enum;
 
 class CancellationReason
 {
-    public const OrderCancelled  = 'OrderCancelled';
+    public const OrderCancelled  = 'Order Cancelled';
     public const Repacked        = 'Repacked';
-    public const UploadedInError = 'UploadedInError';
+    public const PackedInError = 'Packed in Error';
     public const WrongService    = 'WrongService';
 }

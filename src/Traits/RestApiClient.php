@@ -10,6 +10,8 @@ use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
+use League\OAuth2\Client\Provider\GenericProvider;
 use MobiMarket\RoyalMailShipping\Entities\ApiAuth;
 use MobiMarket\RoyalMailShipping\Exceptions\RequestFailed;
 use MobiMarket\RoyalMailShipping\Exceptions\UnexpectedResponse;
@@ -78,7 +80,7 @@ trait RestApiClient
         $this->cache_ttl = $cache_ttl;
 
         // If caching is enabled, attempt to load it.
-        if ($cache_ttl && $token = Cache::get('rm-integration-token')) {
+        if ($cache_ttl && $token = Cache::get('rm-access-token')) {
             $this->auth->token = $token;
         }
     }
@@ -101,8 +103,7 @@ trait RestApiClient
 
         $body    = json_encode($data ?? []);
         $headers = $headers ?? [
-            'X-IBM-Client-Id'  => $this->auth->client_id,
-            'X-RMG-Auth-Token' => $this->auth->token,
+            'Authorization'  => 'Bearer '.$this->auth->token
         ];
 
         /**
@@ -164,21 +165,24 @@ trait RestApiClient
      */
     protected function getFreshToken(): void
     {
-        $headers = [
-            'X-IBM-Client-Id'         => $this->auth->client_id,
-            'X-IBM-Client-Secret'     => $this->auth->client_secret,
-            'X-RMG-Security-Username' => $this->auth->username,
-            'X-RMG-Security-Password' => $this->auth->password,
-        ];
+        $provider = new GenericProvider([
+            'clientId'                => $this->auth->client_id,    // The client ID assigned to you by the provider
+            'clientSecret'            => $this->auth->client_secret,    // The client password assigned to you by the provider
+            'redirectUri'             => 'un-used',
+            'urlAuthorize'            => 'un-used',
+            'urlAccessToken'          => 'https://authentication.proshipping.net/connect/token',
+            'urlResourceOwnerDetails' => 'un-used'
+        ]);
 
-        // do not refresh, since this IS the refresh request.
-        $response = $this->sendAPIRequestNotEmpty('post', 'token', null, $headers, true);
-
-        // Update token then cache.
-        $this->auth->token = $response->token;
+        try {
+            // Try to get an access token using the client credentials grant.
+            $this->auth->token = $provider->getAccessToken('client_credentials')->getToken();
+        } catch (IdentityProviderException $e) {
+            $this->auth->token = '';
+        }
 
         if ($this->cache_ttl) {
-            Cache::put('rm-integration-token', $this->auth->token, $this->cache_ttl);
+            Cache::put('rm-access-token', $this->auth->token, $this->cache_ttl);
         }
     }
 }

@@ -14,14 +14,6 @@ class ApiAuth
      * @var string
      */
     public $client_secret;
-    /**
-     * @var string
-     */
-    public $username;
-    /**
-     * @var string
-     */
-    public $password;
 
     /**
      * @var string
@@ -37,8 +29,6 @@ class ApiAuth
 
         $entity->client_id     = $auth['client_id'];
         $entity->client_secret = $auth['client_secret'];
-        $entity->username      = $auth['username'];
-        $entity->password      = $auth['password'];
 
         return $entity;
     }

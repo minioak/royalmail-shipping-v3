@@ -44,6 +44,6 @@ class RoyalMailRestApi
      */
     public function shipmentStatus(array $body): ?object
     {
-        return $this->sendAPIRequestNotEmpty('put', 'shipments/cancel', $body);
+        return $this->sendAPIRequest('put', 'shipments/status', $body);
     }
 }
